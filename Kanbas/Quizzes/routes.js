@@ -68,7 +68,7 @@ export default function QuizzesRoutes(app) {
     }
   });
 
-  // 查询所有 Quizzes（可选）
+  // 查询所有 Quizzes
   app.get("/api/quizzes", async (req, res) => {
     try {
       const quizzes = await quizzesDao.findAllQuizzes();
@@ -79,7 +79,7 @@ export default function QuizzesRoutes(app) {
     }
   });
 
-  // 查询单个 Quiz（可选）
+  // 查询单个 Quiz
   app.get("/api/quizzes/:quizId", async (req, res) => {
     const { quizId } = req.params;
     try {

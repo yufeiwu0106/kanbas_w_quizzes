@@ -18,10 +18,13 @@ export default function QuizzesRoutes(app) {
     const newQuiz = req.body;
     try {
       const createdQuiz = await quizzesDao.createQuiz(newQuiz);
-      res.status(201).json(createdQuiz); // 返回新创建的 Quiz
+      res.status(201).json({
+        message: `Quiz: "${createdQuiz.title}" has been created`,
+        quiz: createdQuiz,
+      }); // 返回确认信息和新创建的 Quiz
     } catch (error) {
       console.error("Error creating quiz:", error);
-      res.sendStatus(500);
+      res.status(500).json({ message: "Error when creating new Quiz" });
     }
   });
 
@@ -32,13 +35,13 @@ export default function QuizzesRoutes(app) {
     try {
       const status = await quizzesDao.updateQuiz(quizId, quizUpdates);
       if (status.modifiedCount === 1) {
-        res.sendStatus(204);
+        res.status(200).json({ message: `Quiz "${quizId}" updated!` });
       } else {
-        res.sendStatus(404);
+        res.status(404).json({ message: `Quiz "${quizId}" can not found` });
       }
     } catch (error) {
       console.error("Error updating quiz:", error);
-      res.sendStatus(500);
+      res.status(500).json({ message: "Error when updating Quiz" });
     }
   });
 
@@ -46,11 +49,18 @@ export default function QuizzesRoutes(app) {
   app.delete("/api/quizzes/:quizId", async (req, res) => {
     const { quizId } = req.params;
     try {
+      // 查找待删除的 Quiz
+      const quiz = await quizzesDao.findQuizById(quizId);
+      if (!quiz) {
+        return res.status(404).json({ message: `Quiz ${quizId} not found` });
+      }
+
+      // 删除 Quiz
       const status = await quizzesDao.deleteQuiz(quizId);
       if (status.deletedCount === 1) {
-        res.sendStatus(204);
+        res.status(200).json({ message: `Quiz: "${quiz.title}" deleted` });
       } else {
-        res.sendStatus(404);
+        res.status(500).json({ message: `Error delete Quiz ${quizId} ` });
       }
     } catch (error) {
       console.error("Error deleting quiz:", error);

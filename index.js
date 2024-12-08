@@ -12,8 +12,10 @@ import ModuleRoutes from "./Kanbas/Modules/routes.js";
 import AssignmentRoutes from "./Kanbas/Assignments/routes.js";
 import EnrollmentsRoutes from "./Kanbas/Enrollments/routes.js";
 import QuizzesRoutes from "./Kanbas/Quizzes/routes.js";
+import QuestionsRoutes from "./Kanbas/Questions/routes.js";
+import RecordsRoutes from "./Kanbas/Records/routes.js";
 
-const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas"
+const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING
 mongoose.connect(CONNECTION_STRING);
 const app = express();
 
@@ -50,5 +52,13 @@ ModuleRoutes(app);
 AssignmentRoutes(app);
 EnrollmentsRoutes(app);
 QuizzesRoutes(app);
+QuestionsRoutes(app);
+RecordsRoutes(app);
 
-app.listen(process.env.PORT || 4000);
+
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
+console.log("SESSION_SECRET:", process.env.SESSION_SECRET);
+console.log("Environment PORT:", process.env.PORT);

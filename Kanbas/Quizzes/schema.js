@@ -40,6 +40,7 @@ const schema = new mongoose.Schema(
     dueDate: { type: Date, required: true },
     availableDate: { type: Date, required: true },
     untilDate: { type: Date, required: true },
+    accessCode: { type: String, default: "0000" },
   },
   { collection: "quizzes", timestamps: true }
 );

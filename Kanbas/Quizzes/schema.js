@@ -18,7 +18,13 @@ const schema = new mongoose.Schema(
     lockQuestionsAfterAnswering: { type: String, enum: ["Yes", "No"], default: "No" },
     dueDate: { type: Date, required: true },
     availableDate: { type: Date, required: true },
+<<<<<<< Updated upstream
     untilDate: { type: Date, required: true }
+=======
+    untilDate: { type: Date, required: true },
+    accessCode: { type: String, default: "AAA000" },
+
+>>>>>>> Stashed changes
   },
   { collection: "quizzes", timestamps: true }
 );

@@ -54,38 +54,37 @@ export default function UserRoutes(app) {
 
   app.get("/api/users", findAllUsers);
 
-  // Update user
   const updateUser = async (req, res) => {
     const userId = req.params.userId;
     const userUpdates = req.body;
-    
-    await dao.updateUser(userId, userUpdates);
-    const currentUser = req.session["currentUser"];
 
+    await dao.updateUser(userId, userUpdates);
+
+    const updatedUser = await dao.findUserById(userId);
+
+    const currentUser = req.session["currentUser"];
     if (currentUser && currentUser._id === userId) {
-      req.session["currentUser"] = { ...currentUser, ...userUpdates };
+      req.session["currentUser"] = updatedUser;
     }
 
-    req.session["currentUser"] = currentUser;
-    res.json(currentUser);
+    res.json(updatedUser);
   };
 
   app.put("/api/users/:userId", updateUser);
 
-  // profile
-  const profile = (req, res) => {
+  const profile = async (req, res) => {
     const currentUser = req.session["currentUser"];
     if (!currentUser) {
       res.sendStatus(401);
       return;
     }
 
-    res.json(currentUser);
+    const freshUser = await dao.findUserById(currentUser._id);
+    res.json(freshUser);
   };
 
   app.post("/api/users/profile", profile);
 
-  // signout
   const signout = (req, res) => {
     req.session.destroy();
     res.sendStatus(200);

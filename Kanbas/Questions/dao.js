@@ -19,3 +19,7 @@ export function deleteQuestion(questionId) {
 export function findAllQuestions(quizId) {
     return model.find();
   }
+
+export function findQuestionById(questionId) {
+  return model.findById(questionId);
+}

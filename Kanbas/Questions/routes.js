@@ -58,4 +58,20 @@ export default function QuestionsRoutes(app) {
       res.sendStatus(500);
     }
   });
+
+  // 获取单个题目
+  app.get("/api/questions/:questionId", async (req, res) => {
+    const { questionId } = req.params;
+    try {
+      const question = await questionsDao.findQuestionById(questionId);
+      if (question) {
+        res.json(question);
+      } else {
+        res.sendStatus(404);
+      }
+    } catch (error) {
+      console.error("Error fetching question:", error);
+      res.sendStatus(500);
+    }
+  });
 }

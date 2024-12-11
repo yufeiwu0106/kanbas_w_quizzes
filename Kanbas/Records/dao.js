@@ -24,14 +24,14 @@ export const findRecordsForUser = async (userId) => {
 
 // 获取某个 Quiz 下某个用户的所有记录
 export const findRecordsForQuizAndUser = async (quizId, userId) => {
-  console.log("Finding records for quizId and userId");
+  console.log("Finding records for quizId, ", quizId, " and userId, ", userId);
 
   const records = await RecordModel.find({
     quizId: quizId.toString(),
     userId: userId.toString(),
   });
   
-  console.log("Found records for quizId and userId");
+  console.log("Found records for quizId and userId", records);
   return records;
 };
 

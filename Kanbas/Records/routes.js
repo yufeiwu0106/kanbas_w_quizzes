@@ -78,13 +78,10 @@ export default function RecordsRoutes(app) {
       try {
         // Fetch all records for the specified quizId and userId
         const records = await findRecordsForQuizAndUser(quizId, userId)
-          .sort({ attemptTime: -1 }) // Sort by attemptTime in descending order to get the most recent record
-          .limit(1); // Limit to 1 record to only get the latest one
 
-        // if (records.length === 0) {
-        //   // return null;
-        //   res.status(404).send("No records found for this quiz and user.");
-        // }
+        // Get the most recent record by attemptTime
+        const mostRecentRecord = records.sort((a, b) => b.attemptTime - a.attemptTime)[0];
+
         if (records.length === 0) {
           // Explicitly return null if no records found
           return res.json(null);
